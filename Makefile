@@ -1,26 +1,28 @@
-# Variables
-IMAGE_NAME = student-crud-api
-VERSION = 1.0.0
-CONTAINER_NAME = student-api
+# Makefile
 
-# Build docker image
+.PHONY: build test lint docker-build docker-push
+
+# Build the API
 build:
-	docker build -t $(IMAGE_NAME):$(VERSION) .
+	@echo "Building API..."
+	@python3 -m py_compile $(shell find . -name "*.py")
 
-# Run docker container
-run:
-	docker run -d -p 5000:5000 --env-file .env --name $(CONTAINER_NAME) $(IMAGE_NAME):$(VERSION)
+# Run tests
+test:
+	@echo "Running tests..."
+	@pytest tests/
 
-# Stop container
-stop:
-	docker stop $(CONTAINER_NAME) || true
-	docker rm $(CONTAINER_NAME) || true
+# Lint code
+lint:
+	@echo "Running lint..."
+	@flake8 .
 
-# View logs
-logs:
-	docker logs -f $(CONTAINER_NAME)
+# Build Docker image
+docker-build:
+	@echo "Building Docker image..."
+	docker build -t student-api .
 
-# Clean up dangling images
-clean:
-	docker system prune -f
-
+# Push Docker image
+docker-push:
+	@echo "Pushing Docker image to DockerHub..."
+	docker push $(DOCKERHUB_USERNAME)/student-api:latest
