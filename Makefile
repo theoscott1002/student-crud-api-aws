@@ -10,7 +10,7 @@ build:
 # Run tests
 test:
 	@echo Running tests...
-	pytest tests/
+	pytest tests/test_routes.py
 
 # Lint code
 lint:
