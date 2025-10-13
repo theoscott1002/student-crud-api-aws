@@ -1,0 +1,11 @@
+﻿{
+  "agentId": 2,
+  "agentName": "DESKTOP-QJA7T1M",
+  "poolId": 1,
+  "poolName": "Default",
+  "serverUrl": "https://pipelinesghubeus15.actions.githubusercontent.com/uM40d7oaD2dMGAjz1hug7YZQ0lt03OvjxlMbwqMJ4q4n4Fo4jK/",
+  "gitHubUrl": "https://github.com/theoscott1002/student-crud-api-aws",
+  "workFolder": "_work",
+  "useV2Flow": true,
+  "serverUrlV2": "https://broker.actions.githubusercontent.com/"
+}
