@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15
+    container_name: db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: student_db
+    ports:
+      - "5432:5432"
+    networks:
+      - student-net
+
+  api:
+    build: .
+    container_name: student-api
+    environment:
+      FLASK_ENV: production
+      DATABASE_URL: postgresql://user:password@db:5432/student_db
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    networks:
+      - student-net
+
+networks:
+  student-net:
+    driver: bridge
