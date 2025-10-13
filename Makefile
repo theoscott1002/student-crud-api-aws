@@ -2,27 +2,18 @@
 
 .PHONY: build test lint docker-build docker-push
 
-# Build the API
+# Build API
 build:
-	@echo "Building API..."
-	@python3 -m py_compile $(shell find . -name "*.py")
+	@echo Building API...
+	python -m py_compile $(shell powershell -Command "Get-ChildItem -Recurse -Filter *.py | ForEach-Object { $$_.FullName }")
 
 # Run tests
 test:
-	@echo "Running tests..."
-	@pytest tests/
+	@echo Running tests...
+	pytest tests/
 
 # Lint code
 lint:
-	@echo "Running lint..."
-	@flake8 .
+	@echo Running lint...
+	flake8 .
 
-# Build Docker image
-docker-build:
-	@echo "Building Docker image..."
-	docker build -t student-api .
-
-# Push Docker image
-docker-push:
-	@echo "Pushing Docker image to DockerHub..."
-	docker push $(DOCKERHUB_USERNAME)/student-api:latest
