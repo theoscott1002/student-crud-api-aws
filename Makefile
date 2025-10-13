@@ -1,7 +1,7 @@
 # Variables
 IMAGE_NAME = student-crud-api
 VERSION = 1.0.0
-CONTAINER_NAME = student-api-aws
+CONTAINER_NAME = student-api
 
 # Build docker image
 build:
