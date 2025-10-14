@@ -6,4 +6,3 @@ class Student(db.Model):
     name = db.Column(db.String(50))
     age = db.Column(db.Integer)
     grade = db.Column(db.String(10))
-    

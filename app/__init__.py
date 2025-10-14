@@ -29,12 +29,12 @@ def create_app():
     app.register_blueprint(api)
 
     # Import models to ensure they're registered with SQLAlchemy
-    #from app import models
+    # from app import models
 
     # Global error handler for database errors
     @app.errorhandler(SQLAlchemyError)
     def handle_db_error(error):
-        return jsonify({"error": "Database error occurred", 
+        return jsonify({"error": "Database error occurred",
                         "details": str(error)}), 500
 
     return app
