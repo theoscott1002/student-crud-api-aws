@@ -42,10 +42,10 @@ jobs:
       
       - name: Docker Login
         run: echo $env:DOCKERHUB_TOKEN | docker login -u $env:DOCKERHUB_USERNAME --password-stdin
-        shell: pwsh
+        shell: bash
 
       - name: Docker Build and Push
         run: |
           docker build -t $env:DOCKERHUB_USERNAME/student-api:latest .
           docker push $env:DOCKERHUB_USERNAME/student-api:latest
-        shell: pwsh
+        shell: bash
