@@ -9,8 +9,9 @@ build:
 
 # Run tests
 test:
-  venv\Scripts\python -m pytest tests/
-  
+	@echo Running tests...
+	pytest tests/
+
 # Lint code
 lint:
 	@echo Running lint...
