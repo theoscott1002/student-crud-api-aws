@@ -3,7 +3,12 @@ name: CI Pipeline - Student API
 on:
   push:
     paths:
-      - 'code/**'
+      - 'app/**'
+      - 'tests/**'
+      - 'Dockerfile'
+      - 'docker-compose.yml'
+      - 'requirements.txt'
+      - 'Makefile'
   workflow_dispatch:  # Allow manual triggers
 
 jobs:
