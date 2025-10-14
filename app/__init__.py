@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from sqlalchemy.exc import SQLAlchemyError
 
-# Define db and migrate globally
+# Define db & migrate globally
 db = SQLAlchemy()
 migrate = Migrate()
 
