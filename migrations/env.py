@@ -31,7 +31,6 @@ def get_engine_url():
             .url.render_as_string(hide_password=False)
             .replace("%", "%%")
         )
-    
 
     except AttributeError:
         return str(get_engine().url).replace("%", "%%")
@@ -74,7 +73,6 @@ def run_migrations_offline():
         target_metadata=get_metadata(),
         literal_binds=True,
     )
-
 
     with context.begin_transaction():
         context.run_migrations()
