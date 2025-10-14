@@ -3,6 +3,7 @@ from app import db  # Import db from app/__init__.py
 
 api = Blueprint('api', __name__, url_prefix='/api/v1')
 
+
 @api.route('/students', methods=['POST'])
 def add_student():
     from app.models import Student  # Import here to avoid circular imports
@@ -15,6 +16,7 @@ def add_student():
     db.session.add(new_student)
     db.session.commit()
     return jsonify({"message": "Student added"}), 201
+
 
 @api.route('/students', methods=['GET'])
 def get_students():
@@ -30,6 +32,7 @@ def get_students():
         for s in students
     ])
 
+
 @api.route('/students/<int:id>', methods=['GET'])
 def get_student(id):
     from app.models import Student  # Import here to avoid circular imports
@@ -40,6 +43,7 @@ def get_student(id):
         "age": student.age,
         "grade": student.grade
     })
+
 
 @api.route('/students/<int:id>', methods=['PUT'])
 def update_student(id):
@@ -52,6 +56,7 @@ def update_student(id):
     db.session.commit()
     return jsonify({"message": "Student updated"})
 
+
 @api.route('/students/<int:id>', methods=['DELETE'])
 def delete_student(id):
     from app.models import Student  # Import here to avoid circular imports
@@ -59,6 +64,7 @@ def delete_student(id):
     db.session.delete(student)
     db.session.commit()
     return jsonify({"message": "Student deleted"})
+
 
 @api.route('/healthcheck', methods=['GET'])
 def health_check():
