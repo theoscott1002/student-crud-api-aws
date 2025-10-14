@@ -5,6 +5,7 @@ on:
     paths:
       - 'app/**'
       - 'tests/**'
+      - 'migrations/**'
       - 'Dockerfile'
       - 'docker-compose.yml'
       - 'requirements.txt'
