@@ -2,8 +2,8 @@
 
 # Variables
 IMAGE_NAME = student-api-aws
+IMAGE_VERSION = 1.0.0
 DOCKER_USER = $(DOCKERHUB_USERNAME)
-TAG = latest
 
 .PHONY: build test lint docker-build docker-push
 
@@ -26,7 +26,7 @@ lint:
 .PHONY: docker-build
 docker-build:
 	@echo "Building Docker image..."
-	docker build -t $(DOCKER_USER)/$(IMAGE_NAME):$(TAG) .
+	docker build -t $(IMAGE_NAME):$(IMAGE_VERSION) .
 
 # Push Docker image to DockerHub
 .PHONY: docker-push
@@ -35,5 +35,5 @@ docker-push:
 ifndef DOCKER_USERNAME
 	$(error DOCKER_USERNAME is not set)
 endif
-	docker push $(DOCKER_USER)/$(IMAGE_NAME):$(TAG)
-
+    docker tag $(IMAGE_NAME):$(IMAGE_VERSION) $(DOCKER_USER)/$(IMAGE_NAME):$(IMAGE_VERSION)
+	docker push $(DOCKER_USER)/$(IMAGE_NAME):$(IMAGE_VERSION)
