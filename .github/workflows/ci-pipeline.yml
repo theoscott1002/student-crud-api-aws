@@ -48,12 +48,12 @@ jobs:
 
       - name: Debug Environment Variables
         run: |
-         echo "DOCKERHUB_USERNAME is: '${DOCKERHUB_USERNAME}'"
-         echo "DOCKER_USER in Makefile will be: '${DOCKERHUB_USERNAME}'"
+         echo "DOCKER_USERNAME is: '${DOCKER_USERNAME}'"
+         echo "DOCKER_USER in Makefile will be: '${DOCKER_USERNAME}'"
         env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
 
       - name: Push Docker Image
         env:
-         DOCKERHUB_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: make docker-push
