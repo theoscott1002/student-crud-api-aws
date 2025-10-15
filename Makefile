@@ -35,5 +35,4 @@ docker-push:
 ifndef DOCKER_USERNAME
 	$(error DOCKER_USERNAME is not set)
 endif
-    docker tag $(IMAGE_NAME):$(IMAGE_VERSION) $(DOCKER_USER)/$(IMAGE_NAME):$(IMAGE_VERSION)
 	docker push $(DOCKER_USER)/$(IMAGE_NAME):$(IMAGE_VERSION)
