@@ -1,9 +1,10 @@
 # Makefile for Student API
 
 # Variables
-IMAGE_NAME ?= student-api
-DOCKER_USER ?= $(DOCKER_USERNAME)
-TAG ?= latest
+IMAGE_NAME = student-api-aws
+IMAGE_VERSION = 1.0.0
+DOCKER_USER = $(DOCKERHUB_USERNAME)
+TAG = latest
 
 .PHONY: build test lint docker-build docker-push
 
@@ -26,11 +27,15 @@ lint:
 .PHONY: docker-build
 docker-build:
 	@echo "Building Docker image..."
-	docker build -t $(DOCKER_USER)/$(IMAGE_NAME):$(TAG) .
+	docker build -t $(DOCKER_USER)/$(IMAGE_NAME):$(TAG):$(IMAGE_VERSION) .
 
 # Push Docker image to DockerHub
 .PHONY: docker-push
 docker-push:
 	@echo "Pushing Docker image..."
-	docker push $(DOCKER_USER)/$(IMAGE_NAME):$(TAG)
+ifndef DOCKER_USERNAME
+	$(error DOCKER_USERNAME is not set)
+endif
+	docker tag $(IMAGE_NAME):$(IMAGE_VERSION) $(DOCKER_USER)/$(IMAGE_NAME):$(IMAGE_VERSION)
+	docker push $(DOCKER_USER)/$(IMAGE_NAME):$(TAG):$(IMAGE_VERSION)
 
