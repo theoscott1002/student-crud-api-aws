@@ -40,12 +40,24 @@ jobs:
       - name: Run Linting
         run: make lint
       
-      - name: Docker Login
-        run: echo $env:DOCKERHUB_TOKEN | docker login -u $env:DOCKERHUB_USERNAME --password-stdin
+      - name: Build Docker Image
+        run: make docker-build
         shell: bash
 
-      - name: Docker Build and Push
+      - name: Log in to DockerHub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+        shell: bash
+
+      - name: Debug Environment Variables
         run: |
-          docker build -t $env:DOCKERHUB_USERNAME/student-api:latest .
-          docker push $env:DOCKERHUB_USERNAME/student-api:latest
+         echo "DOCKER_USERNAME is: '${DOCKER_USERNAME}'"
+         echo "DOCKER_USER in Makefile will be: '${DOCKER_USERNAME}'"
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        shell: bash
+
+      - name: Push Docker Image
+        env:
+         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        run: make docker-push
         shell: bash
