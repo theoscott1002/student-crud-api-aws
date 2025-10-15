@@ -49,12 +49,14 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        shell: bash
 
       # ✅ Optional Debug (shows if secrets are loaded)
       - name: Debug DockerHub Secrets
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: "Using DockerHub user: '${DOCKER_USERNAME}'"
+        shell: bash
 
       - name: Push Docker Image
         env:
