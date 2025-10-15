@@ -11,11 +11,11 @@ on:
       - 'docker-compose.yml'
       - 'requirements.txt'
       - 'Makefile'
-  workflow_dispatch:  # Allow manual triggers
+  workflow_dispatch:
 
 jobs:
   build-and-push:
-    runs-on: self-hosted  # Use your local self-hosted runner
+    runs-on: self-hosted
 
     steps:
       - name: Checkout Repository
@@ -39,21 +39,24 @@ jobs:
 
       - name: Run Linting
         run: make lint
-      
+
       - name: Build Docker Image
         run: make docker-build
 
+      # ✅ Login using consistent variable names
       - name: Log in to DockerHub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-      - name: Debug Environment Variables
-        run: |
-         echo "DOCKER_USERNAME is: '${DOCKER_USERNAME}'"
-         echo "DOCKER_USER in Makefile will be: '${DOCKER_USERNAME}'"
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+      # ✅ Optional Debug (shows if secrets are loaded)
+      - name: Debug DockerHub Secrets
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        run: "Using DockerHub user: '${DOCKER_USERNAME}'"
 
       - name: Push Docker Image
         env:
-         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: make docker-push
