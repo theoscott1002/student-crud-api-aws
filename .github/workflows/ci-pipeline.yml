@@ -50,8 +50,9 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSCODE: ${{ secrets.DOCKER_PASSCODE }}
+        shell: pwsh
         run: |
-          docker logout || true
-          echo "$DOCKER_PASSCODE" | docker login -u "$DOCKER_USERNAME" --password-stdin
-          docker info
-        shell: bash
+         docker logout | Out-Null
+         $env:DOCKER_PASSCODE | docker login -u $env:DOCKER_USERNAME --password-stdin
+         docker info
+
