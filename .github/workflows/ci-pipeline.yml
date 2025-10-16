@@ -16,7 +16,6 @@ on:
 jobs:
   build-and-test:
     runs-on: self-hosted
-    if: github.ref == 'refs/heads/main'
 
     steps:
       - name: Checkout Repository
@@ -42,7 +41,7 @@ jobs:
         run: make lint
 
   docker-build-and-push:
-    #needs: build-and-test
+    needs: build-and-test
     runs-on: self-hosted
 
     steps:
@@ -58,7 +57,7 @@ jobs:
     - name: Log in to DockerHub
       env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSCODE }}
+          DOCKER_PASSCODE: ${{ secrets.DOCKER_PASSCODE }}
       run: |
           echo "$DOCKER_PASSCODE" | docker login -u "$DOCKER_USERNAME" --password-stdin
       shell: powershell
@@ -76,5 +75,3 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       run: make docker-push  
       shell: powershell  
-
-
