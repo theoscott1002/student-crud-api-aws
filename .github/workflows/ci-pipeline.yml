@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-push:
+  build-and-test:
     runs-on: self-hosted
 
     steps:
@@ -40,25 +40,31 @@ jobs:
       - name: Run Linting
         run: make lint
 
+  docker-build-and-push:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Build Docker Image
         run: make docker-build
 
-      # ✅ Login using consistent variable names
       - name: Log in to DockerHub
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        shell: bash
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      # ✅ Optional Debug (shows if secrets are loaded)
-      - name: Debug DockerHub Secrets
+      - name: Debug Environment Variables
+        run: |
+          echo "DOCKER_USERNAME is: '$DOCKER_USERNAME'"
+          echo "DOCKER_USER in Makefile will be: '${DOCKER_USERNAME}'"
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        run: "Using DockerHub user: '${DOCKER_USERNAME}'"
-        shell: bash
 
       - name: Push Docker Image
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        run: make docker-push
+        run: make docker-push    
