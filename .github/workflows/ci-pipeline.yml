@@ -16,6 +16,7 @@ on:
 jobs:
   build-and-test:
     runs-on: self-hosted
+    if: github.ref == 'refs/heads/main'
 
     steps:
       - name: Checkout Repository
@@ -41,30 +42,16 @@ jobs:
         run: make lint
 
   docker-build-and-push:
-    needs: build-and-test
+    #needs: build-and-test
     runs-on: self-hosted
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Build Docker Image
-        run: make docker-build
-
-      - name: Log in to DockerHub
-        run: echo "${{ secrets.DOCKER_PASSCODE }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-      - name: Debug Environment Variables
+      - name: Test Docker Login
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSCODE: ${{ secrets.DOCKER_PASSCODE }}
         run: |
-          echo "DOCKER_USERNAME is: '$DOCKER_USERNAME'"
-          echo "DOCKER_USER in Makefile will be: '${DOCKER_USERNAME}'"
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-
-      - name: Push Docker Image
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        run: make docker-push    
+          docker logout || true
+          echo "$DOCKER_PASSCODE" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          docker info
+        shell: bash
