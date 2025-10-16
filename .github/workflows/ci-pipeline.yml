@@ -50,7 +50,7 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSCODE: ${{ secrets.DOCKER_PASSCODE }}
-        shell: pwsh
+        shell: powershell
         run: |
          docker logout | Out-Null
          $env:DOCKER_PASSCODE | docker login -u $env:DOCKER_USERNAME --password-stdin
