@@ -43,6 +43,7 @@ jobs:
   docker-build-and-push:
     needs: build-and-test
     runs-on: self-hosted
+    name: Build and Push Docker Image
 
     steps:
     - name: Checkout Code
@@ -55,23 +56,24 @@ jobs:
       run: make docker-build
 
     - name: Log in to DockerHub
+      shell: powershell
       env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSCODE: ${{ secrets.DOCKER_PASSCODE }}
       run: |
-          echo "$DOCKER_PASSCODE" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      shell: powershell
-
-    - name: Debug Environment Variables
-      run: |
-          echo "DOCKER_USERNAME is: '$DOCKER_USERNAME'"
-          echo "DOCKER_USER in Makefile will be: '${DOCKER_USERNAME}'"
-      env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      shell: powershell
+          docker logout | Out-Null
+          $env:DOCKER_PASSCODE | docker login -u $env:DOCKER_USERNAME --password-stdin
 
     - name: Push Docker Image
+      shell: powershell
       env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      run: make docker-push  
-      shell: powershell  
+      run: make docker-push
+
+    - name: Pull Image (Verification)
+      shell: powershell
+      env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      run: |
+          Write-Host "Pulling image to verify upload..."
+          docker pull $env:DOCKER_USERNAME/student-api:latest
