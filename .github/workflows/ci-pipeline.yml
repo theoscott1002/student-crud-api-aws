@@ -1,5 +1,8 @@
 name: Test Docker Login
 on:
+  push:
+    paths:
+      - '.github/**'
   workflow_dispatch:
 
 jobs:
