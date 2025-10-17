@@ -5,6 +5,7 @@ flask db init
 flask db migrate -m "Initial migration"
 flask db upgrade
 flask run
+
 ###------Containerization Overview--------#####
 Created the dockerfile and the docker compose file to create the app and db containers respectively
 Updated the make file to biuld image and run container
@@ -12,3 +13,16 @@ Updated the .env file to have environment variables like database URL or secret 
 ----->Issues encountered: 1. Got an unhealthy image; had to add app.run(host="0.0.0.0", port=5000) to the run.py
 2. Had issues connecting to the db(PostgreSQL service); Logged into the container bash while it was running and  Ran flask db init, flask db migrate -m "initial migration", and flask db upgrade to create the db table
 ----->How to start containers: docker start student-api  and docker start db
+
+###-----CICD-PIPELINE----------########
+Updated the Makefile
+Create a GitHub Actions Workflow
+Configure DockerHub Credentials- DOCKERHUB_USERNAME and DOCKERHUB_TOKEN
+Setup a Self-Hosted GitHub Runner- follow the instructions from Github
+make sure you are in the actions-runner folder before running .\run.cmd
+Used Block. to take care of indentations for linting
+Steps to push to GitHub
+1. git add filename
+2. git commit -m "comment"
+3. git push -u origin cicd-pipeline
+Then cd actions-runner, then .\run.cmd to start runner
