@@ -2,7 +2,7 @@
 
 # Variables
 IMAGE_NAME = student-api-aws
-IMAGE_VERSION = 1.0.0
+IMAGE_VERSION = latest
 DOCKER_USER = $(DOCKER_USERNAME)
 
 .PHONY: build test lint docker-build docker-push
