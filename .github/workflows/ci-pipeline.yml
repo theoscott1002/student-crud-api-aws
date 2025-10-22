@@ -46,6 +46,7 @@ jobs:
   docker-push-and-pull:
     needs: build-and-test
     runs-on: self-hosted
+    if: github.ref == 'refs/heads/main'
     defaults:
       run:
         shell: powershell
